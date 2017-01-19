@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
 
 #pragma once
 
@@ -26,13 +26,22 @@ public:
 
 private:
     
+    bool DoorOpen = false;
+    
     UPROPERTY(EditAnywhere)
-    float DoorAngle = -60.0f;
+    float DoorAngle = 90.0f;
     
     UPROPERTY(EditAnywhere)
     ATriggerVolume* PressurePlate;
+
+    UPROPERTY(EditAnywhere)
+    float DoorOpenDelay = 1.5f;
+    
+    float LastDoorOpenTime;
+    
     
     AActor* ActorThatOpens;
+    AActor* Owner;
     
 
     
