@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
 
 #include "BuildingEscape.h"
 #include "OpenDoor.h"
@@ -33,15 +33,24 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 
 	// Check every frame to see if our allowed actor as collided with the Pressure Place
     
-
+    // Door is open, pressure plate not overlapped: close door after DoorOpenDelay
+    if (DoorOpen)
+    {
+        // If pressure plate not overlapped, close door after DoorOpenDelay
+        if (!PressurePlate->IsOverlappingActor(ActorThatOpens))
+        {
+            if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorOpenDelay)
+            {
+                CloseDoor();
+            }
+        }
+    }
+    
+    // Door is closed, pressure plate overlapped: open door
     if (!DoorOpen && (PressurePlate->IsOverlappingActor(ActorThatOpens)))
     {
         OpenDoor();
-    } else if (DoorOpen && (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorOpenDelay))
-    {
-        CloseDoor();
     }
-    
 }
 
 
