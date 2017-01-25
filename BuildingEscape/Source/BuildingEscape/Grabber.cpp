@@ -47,6 +47,21 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
            *PlayerViewRotation.ToString())
     
     
+    // Draw the debug line (if enabled)
+    if (DebugLineEnabled)
+    {
+        FVector DebugLineEnd = PlayerViewLocation + FVector(0.f, 0.f, Reach);
+        DrawDebugLine(
+                      GetWorld(),
+                      PlayerViewLocation,
+                      DebugLineEnd,
+                      FColor(255,0,0), 
+                      false, -1, 0, 
+                      12.333
+                      );
+        
+    }
+    
     // Ray-cast out to the ReachDistance
     
     // See if we overlapped any objects
