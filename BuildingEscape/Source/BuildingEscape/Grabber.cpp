@@ -42,15 +42,15 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
         OUT PlayerViewRotation
      );
     
-    UE_LOG(LogTemp, Warning, TEXT("Player is looking at loc %s with rot %s"),
-           *PlayerViewLocation.ToString(),
-           *PlayerViewRotation.ToString())
-    
+//    UE_LOG(LogTemp, Warning, TEXT("Player is looking at loc %s with rot %s"),
+//           *PlayerViewLocation.ToString(),
+//           *PlayerViewRotation.ToString())
+//    
     
     // Draw the debug line (if enabled)
     if (DebugLineEnabled)
     {
-        FVector DebugLineEnd = PlayerViewLocation + FVector(0.f, 0.f, Reach);
+        FVector DebugLineEnd = PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
         DrawDebugLine(
                       GetWorld(),
                       PlayerViewLocation,
