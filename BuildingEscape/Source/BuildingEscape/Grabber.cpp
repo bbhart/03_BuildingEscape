@@ -41,20 +41,18 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
         OUT PlayerViewLocation,
         OUT PlayerViewRotation
      );
-    
-//    UE_LOG(LogTemp, Warning, TEXT("Player is looking at loc %s with rot %s"),
-//           *PlayerViewLocation.ToString(),
-//           *PlayerViewRotation.ToString())
-//    
+ 
+
+    FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
     
     // Draw the debug line (if enabled)
     if (DebugLineEnabled)
     {
-        FVector DebugLineEnd = PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
+
         DrawDebugLine(
                       GetWorld(),
                       PlayerViewLocation,
-                      DebugLineEnd,
+                      LineTraceEnd,
                       FColor(255,0,0), 
                       false, -1, 0, 
                       12.333
@@ -63,6 +61,24 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
     }
     
     // Ray-cast out to the ReachDistance
+    FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+                          
+    FHitResult Hit;
+    GetWorld()->LineTraceSingleByObjectType(
+        OUT Hit,
+        PlayerViewLocation,
+        LineTraceEnd,
+        FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+        TraceParameters
+    );
+    
+    
+    AActor* ActorHit = Hit.GetActor();
+    if (ActorHit)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *(ActorHit->GetName()))
+    }
+
     
     // See if we overlapped any objects
     

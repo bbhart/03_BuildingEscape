@@ -27,5 +27,6 @@ private:
     
     UPROPERTY(EditAnywhere)
     bool DebugLineEnabled = false;
+    
 	
 };
