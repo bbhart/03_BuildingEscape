@@ -28,5 +28,6 @@ private:
     UPROPERTY(EditAnywhere)
     bool DebugLineEnabled = false;
     
+    UPhysicsHandleComponent* PhysicsHandle = nullptr;
 	
 };

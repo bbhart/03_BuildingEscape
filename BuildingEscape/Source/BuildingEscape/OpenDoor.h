@@ -26,7 +26,7 @@ public:
 
 private:
     
-    bool DoorOpen = false;
+    bool isDoorOpen = false;
     
     UPROPERTY(EditAnywhere)
     float DoorAngle = 90.0f;

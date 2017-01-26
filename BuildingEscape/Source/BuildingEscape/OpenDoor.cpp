@@ -34,7 +34,7 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 	// Check every frame to see if our allowed actor as collided with the Pressure Place
     
     // Door is open, pressure plate not overlapped: close door after DoorOpenDelay
-    if (DoorOpen)
+    if (isDoorOpen)
     {
         // If pressure plate not overlapped, close door after DoorOpenDelay
         if (!PressurePlate->IsOverlappingActor(ActorThatOpens))
@@ -47,7 +47,7 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
     }
     
     // Door is closed, pressure plate overlapped: open door
-    if (!DoorOpen && (PressurePlate->IsOverlappingActor(ActorThatOpens)))
+    if (!isDoorOpen && (PressurePlate->IsOverlappingActor(ActorThatOpens)))
     {
         OpenDoor();
     }
@@ -59,12 +59,12 @@ void UOpenDoor::OpenDoor()
     
     Owner->SetActorRotation(FRotator(0.0f, DoorAngle, 0.0f));
     LastDoorOpenTime = GetWorld()->GetTimeSeconds();
-    DoorOpen = true;
+    isDoorOpen = true;
 
 }
 
 void UOpenDoor::CloseDoor()
 {
     Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-    DoorOpen = false;
+    isDoorOpen = false;
 }
