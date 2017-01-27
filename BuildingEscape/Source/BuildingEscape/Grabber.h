@@ -29,5 +29,6 @@ private:
     bool DebugLineEnabled = false;
     
     UPhysicsHandleComponent* PhysicsHandle = nullptr;
+    UInputComponent* InputComponent = nullptr;
 	
 };

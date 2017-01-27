@@ -24,6 +24,8 @@ void UGrabber::BeginPlay()
     UE_LOG(LogTemp, Warning, TEXT("Grabber reporting for duty."))
     
     PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+    InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+                                                      
     if (PhysicsHandle)
     {
         // Fine
@@ -31,6 +33,15 @@ void UGrabber::BeginPlay()
     else
     {
         UE_LOG(LogTemp, Error, TEXT("Cannot find UPhysicsHandleComponent attached to %s"), *GetOwner()->GetName())
+    }
+    
+    if (InputComponent)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Found UInputComponent."))
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Cannot find UInputComponent"))
     }
 	
 }
@@ -90,7 +101,6 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 
     
     // See if we overlapped any objects
-    
     
 }
 
