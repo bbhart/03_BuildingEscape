@@ -38,11 +38,15 @@ void UGrabber::BeginPlay()
     if (InputComponent)
     {
         UE_LOG(LogTemp, Warning, TEXT("Found UInputComponent."))
+        UE_LOG(LogTemp, Warning, TEXT("Binding Grab action"))
+        InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
     }
     else
     {
         UE_LOG(LogTemp, Error, TEXT("Cannot find UInputComponent"))
     }
+    
+    
 	
 }
 
@@ -101,6 +105,10 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 
     
     // See if we overlapped any objects
+    
+}
+
+void UGrabber::Grab(){
     
 }
 
