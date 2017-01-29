@@ -109,6 +109,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 }
 
 void UGrabber::Grab(){
+    UE_LOG(LogTemp, Warning, TEXT("Trying to grab!"))
     
 }
 
