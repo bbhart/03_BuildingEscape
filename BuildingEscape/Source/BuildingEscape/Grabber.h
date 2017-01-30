@@ -24,14 +24,26 @@ public:
 private:
     UPROPERTY(EditAnywhere)
     float Reach = 90.0f;
-    
-    UPROPERTY(EditAnywhere)
-    bool DebugLineEnabled = false;
-    
+
+
     UPhysicsHandleComponent* PhysicsHandle = nullptr;
     UInputComponent* InputComponent = nullptr;
+
     
+    // Find (assumed) attached physics handle
+    void FindPhysicsHandleComponent();
+
+    // Setup (assumed) attached input component
+    void SetupInputComponent();
+    
+    // Attach a nearby PhysicsBody to the player
     void Grab();
+    
+    // Release the PhysicsBody attached to the player
 	void Release();
+    
+    // Get first PhysicsBody within reach
+    const FHitResult GetFirstPhysicsBodyInReach();
+    
 	
 };
