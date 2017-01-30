@@ -78,7 +78,7 @@ void UGrabber::SetupInputComponent()
     
 }
 
-const UGrabber::GetFirstPhysicsBodyInReach()
+const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 {
     
     // Get the PlayerViewG
@@ -109,11 +109,9 @@ const UGrabber::GetFirstPhysicsBodyInReach()
     
     
     AActor* ActorHit = Hit.GetActor();
-    if (ActorHit)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *(ActorHit->GetName()))
-    }
+
     
+    return FHitResult();
 
     
 }
