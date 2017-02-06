@@ -102,7 +102,7 @@ const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
     FHitResult Hit;
     GetWorld()->LineTraceSingleByObjectType(
                                             OUT Hit,
-                                            PlayerViewLocation,
+                                            GetReachLineStart(),
                                             GetReachLineEnd(),
                                             FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
                                             TraceParameters
@@ -118,7 +118,6 @@ const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 
 FVector UGrabber::GetReachLineEnd()
 {
-	// Get the PlayerViewPoint
 	FVector PlayerViewLocation;
 	FRotator PlayerViewRotation;
 
@@ -132,7 +131,16 @@ FVector UGrabber::GetReachLineEnd()
 	return PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
 }
 
-FVector UGrabber::GetPlayerViewLocation()
+FVector UGrabber::GetReachLineStart()
 {
-
+    FVector PlayerViewLocation;
+    FRotator PlayerViewRotation;
+    
+    GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint
+    (
+     OUT PlayerViewLocation,
+     OUT PlayerViewRotation
+     );
+    
+    return PlayerViewLocation;
 }

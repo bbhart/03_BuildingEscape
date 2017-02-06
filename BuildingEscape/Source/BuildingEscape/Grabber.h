@@ -47,5 +47,8 @@ private:
     
 	// Return FVector for where to end our player's reach
 	FVector GetReachLineEnd();
+    
+    // Return FVector for start of reach line
+    FVector GetReachLineStart();
 	
 };
