@@ -45,5 +45,7 @@ private:
     // Get first PhysicsBody within reach
     const FHitResult GetFirstPhysicsBodyInReach();
     
+	// Return FVector for where to end our player's reach
+	FVector GetReachLineEnd();
 	
 };
