@@ -48,12 +48,14 @@ void UGrabber::Grab(){
 
 	if (ActorHit)
 	{
-		PhysicsHandle->GrabComponent(
-			ComponentToGrab,
-			NAME_None,
-			ComponentToGrab->GetOwner()->GetActorLocation(),
-			true // allow rotation
-		);
+        PhysicsHandle->GrabComponentAtLocationWithRotation
+        (
+         ComponentToGrab,
+         NAME_None,
+         ComponentToGrab->GetOwner()->GetActorLocation(),
+         FRotator(0.0f)
+        );
+        
 	}
     
 }
@@ -80,8 +82,6 @@ void UGrabber::SetupInputComponent()
     InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
     if (InputComponent)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Found UInputComponent."))
-        UE_LOG(LogTemp, Warning, TEXT("Binding Grab action"))
         InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
         InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
     }
@@ -89,31 +89,20 @@ void UGrabber::SetupInputComponent()
     {
         UE_LOG(LogTemp, Error, TEXT("Cannot find UInputComponent"))
     }
-    
 }
 
 const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 {
-    
-
-    // Ray-cast out to the ReachDistance
+    FHitResult HitResult;
     FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
-    
-    FHitResult Hit;
     GetWorld()->LineTraceSingleByObjectType(
-                                            OUT Hit,
+                                            OUT HitResult,
                                             GetReachLineStart(),
                                             GetReachLineEnd(),
                                             FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
                                             TraceParameters
                                             );
-        
-    AActor* ActorHit = Hit.GetActor();
-	UE_LOG(LogTemp, Warning, TEXT("Linetraced out and hit %s"), *(ActorHit->GetName()) )
-
-    return Hit;
-
-    
+    return HitResult;
 }
 
 FVector UGrabber::GetReachLineEnd()
@@ -126,8 +115,7 @@ FVector UGrabber::GetReachLineEnd()
 		OUT PlayerViewLocation,
 		OUT PlayerViewRotation
 	);
-
-
+    
 	return PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
 }
 
