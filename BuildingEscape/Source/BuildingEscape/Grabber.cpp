@@ -30,20 +30,52 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+    
+	// Get the PlayerViewPoint
+	FVector PlayerViewLocation;
+	FRotator PlayerViewRotation;
 
-    
-    // If the player is trying to grab, then check if they've hit something grabbable
-    
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint
+	(
+		OUT PlayerViewLocation,
+		OUT PlayerViewRotation
+	);
+
+
+	FVector LineTraceEnd = PlayerViewLocation + PlayerViewRotation.Vector() * Reach;
+
+
+	// If the PhysicsHandle is attached
+	if (PhysicsHandle->GrabbedComponent)
+	{
+		// Move the object we're holding
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+	}
     
 }
 
 void UGrabber::Grab(){
-    UE_LOG(LogTemp, Warning, TEXT("Trying to grab"))
+
+	auto HitResult = GetFirstPhysicsBodyInReach();
+	auto ComponentToGrab = HitResult.GetComponent();
+	auto ActorHit = HitResult.GetActor();
+
+	if (ActorHit)
+	{
+		PhysicsHandle->GrabComponent(
+			ComponentToGrab,
+			NAME_None,
+			ComponentToGrab->GetOwner()->GetActorLocation(),
+			true // allow rotation
+		);
+	}
     
 }
 
 void UGrabber::Release() {
-	UE_LOG(LogTemp, Warning, TEXT("Releasing"))
+	
+	PhysicsHandle->ReleaseComponent();
+
 }
 
 void UGrabber::FindPhysicsHandleComponent()
@@ -81,7 +113,7 @@ void UGrabber::SetupInputComponent()
 const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 {
     
-    // Get the PlayerViewG
+    // Get the PlayerViewPoint
     FVector PlayerViewLocation;
     FRotator PlayerViewRotation;
     
@@ -106,12 +138,11 @@ const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
                                             FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
                                             TraceParameters
                                             );
-    
-    
+        
     AActor* ActorHit = Hit.GetActor();
+	UE_LOG(LogTemp, Warning, TEXT("Linetraced out and hit %s"), *(ActorHit->GetName()) )
 
-    
-    return FHitResult();
+    return Hit;
 
     
 }
