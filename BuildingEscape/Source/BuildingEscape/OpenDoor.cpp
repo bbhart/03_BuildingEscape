@@ -21,7 +21,6 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
     
     Owner = GetOwner();
-    ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
     
 }
 
@@ -31,26 +30,15 @@ void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// Check every frame to see if our allowed actor as collided with the Pressure Place
-    
-    // Door is open, pressure plate not overlapped: close door after DoorOpenDelay
-    if (isDoorOpen)
-    {
-        // If pressure plate not overlapped, close door after DoorOpenDelay
-        if (!PressurePlate->IsOverlappingActor(ActorThatOpens))
-        {
-            if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorOpenDelay)
-            {
-                CloseDoor();
-            }
-        }
-    }
-    
-    // Door is closed, pressure plate overlapped: open door
-    if (!isDoorOpen && (PressurePlate->IsOverlappingActor(ActorThatOpens)))
+    if (GetTotalMassOfActorsOnPlate() > TriggerMassInKg)
     {
         OpenDoor();
     }
+    else
+    {
+        if (isDoorOpen) { CloseDoor(); }
+    }
+    
 }
 
 
@@ -67,4 +55,9 @@ void UOpenDoor::CloseDoor()
 {
     Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
     isDoorOpen = false;
+}
+
+float UOpenDoor::GetTotalMassOfActorsOnPlate()
+{
+    return 0.f; // TODO fix this yo
 }
